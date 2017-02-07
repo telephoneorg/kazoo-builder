@@ -1,0 +1,11 @@
+kubernetes/
+tests/
+scripts/
+.cache/
+.*/
+.*
+*.md
+*.rst
+*.env
+Makefile
+Dockerfile.*
