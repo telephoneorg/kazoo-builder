@@ -16,6 +16,9 @@ notifications:
     - secure: "hyOuSVXvzb9mVT8crXZG2RMuAKWpP9/iIOz6LMaSHMaHNmS2+AtRQinnxJa+RzGYLLFSZGZtnFEIHfGUSTfDyzYuORRvcubz5sfUGpau/1hcqU+ANLV96W/dBfMzXO9m88YxAMefrWu6SBIT+YeE+Qq9QVCiEF+FIrulL1SYfYzpe+a1C3/wtKSBe8qyv6Fn1Ij3nkfyE4UsMlpVzFIjNq7HkcYFnwmuL97DGPET3JunJCxv9ZgCudbVC30G4kt0oUaml6reqfFVkLkW6FegdojzXAdL+8OKytL8Hsc2nVOHGJiED40K5gqSOERMtCPNwevHgBZsDN2GBuqxbErtS8ykJ4IA0xr0u/50j94sY+2xLqFbnMfpV/9siojbyZPXC5rSq+NsTXDcrUC+FJ3u+rFTCSY78/GJ3eUrGqs79DBTukZsvTch9Q1PE0XsZUFEKBe10x5YKUN1W+LJHD0e4FcSOQVA4USzlC8xZnreiMlpkxAnVyq5n3w5WbhPcuiqRaul9N8Sdl/0Z2g62ilhElactcF43KkYb67vvUT9dYSXqdz0+Sr9NyXMypaoFgrLeziXSRpICa75KZ2h3/qb4F5H6jpcR+cAMZYTn17ImZj0tm5SsnEFdWvTa65bMD/SE1wW9ni9WUJ2Lte1fxMI7Y8b87ecZz6IdbcLpOLSvFg="
     on_success: always
     on_failure: always
+branches:
+  only:
+  - master
 
 before_install:
 - go get github.com/aktau/github-release

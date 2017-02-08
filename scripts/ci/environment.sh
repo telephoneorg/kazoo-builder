@@ -117,19 +117,20 @@ function get-next-tag-ver {
 }
 
 function bump-version {
-	local ver=$(get-next-tag-ver)
-	git tag $ver
-	git push origin --tags
+	local tag=$(get-next-tag-ver)
+	curl -X POST -H "Authorization: token $GITHUB_TOKEN" \
+        --data "{\"ref\": \"refs/tags/$tag\", \"sha\": \"$TRAVIS_COMMIT\"}" \
+        https://api.github.com/repos/sip-li/kazoo-builder/git/refs
 }
 
 function make-release {
 	github-release release --user $ORG --repo $NAME \
-		--tag $(get-current-git-tag)
+		--tag $(get-next-tag-ver)
 }
 
 function upload-release {
 	github-release upload --user $ORG --repo $NAME \
-		--tag $(get-current-git-tag) \
+		--tag $(get-next-tag-ver) \
         --name kazoo.tar.gz --file export/kazoo.tar.gz
 }
 
@@ -145,6 +146,7 @@ export DOCKER_USER=$(get-user)
 export DOCKER_IMAGE=$(get-docker-image)
 
 echo -e "
+TRAVIS_COMMIT: $TRAVIS_COMMIT
 NAME: $NAME
 BRANCH: $BRANCH
 TAG: $TAG

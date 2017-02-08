@@ -1,6 +1,6 @@
 # Kazoo 4.0 Builder
 
-[![Build Status](https://travis-ci.org/sip-li/docker-kazoo.svg?branch=master)](https://travis-ci.org/sip-li/kazoo-builder) [![Docker Pulls](https://img.shields.io/docker/pulls/callforamerica/kazoo.svg)](https://store.docker.com/community/images/callforamerica/kazoo-builder)
+[![Build Status](https://travis-ci.org/sip-li/kazoo-builder.svg?branch=master)](https://travis-ci.org/sip-li/kazoo-builder) [![Docker Pulls](https://img.shields.io/docker/pulls/callforamerica/kazoo-builder.svg)](https://store.docker.com/community/images/callforamerica/kazoo-builder)
 
 ## Maintainer
 
