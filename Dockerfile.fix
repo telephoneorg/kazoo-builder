@@ -1,6 +1,0 @@
-FROM callforamerica/kazoo-builder
-
-MAINTAINER Joe Black <joeblack949@gmail.com>
-
-RUN     find $HOME -maxdepth 1 -type f -exec rm -f {} \;
-RUN     tar czvf /tmp/kazoo.tar.gz $HOME && mv /tmp/kazoo.tar.gz $HOME/

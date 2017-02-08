@@ -125,6 +125,7 @@ chown -R $USER:$USER ~
 
 log::m-info "Cleaning up ..."
 apt-clean --aggressive
+find ~ -maxdepth 1 -type f -exec rm -f {} \;
 
 
 log::m-info "Creating archive ..."

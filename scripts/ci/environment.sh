@@ -1,7 +1,7 @@
 # Helpers
 
 function get-name {
-    basename $PWD | cut -d'-' -f2
+    basename $PWD
 }
 
 # Creates a stable branch identifier when executing CI on pull requests.
@@ -105,6 +105,34 @@ function ci-tag-build {
     tag ${TRAVIS_COMMIT::6}
     tag travis-$TRAVIS_BUILD_NUMBER
 }
+
+function get-current-git-tag {
+	git tag | sort -n | tail -1
+}
+
+function get-next-tag-ver {
+	local base=$(get-current-git-tag | cut -d'-' -f1)
+	local ver=$(get-current-git-tag | cut -d'-' -f2 | awk '{$NF+=1; print $0}')
+	echo "${base}-${ver}"
+}
+
+function bump-version {
+	local ver=$(get-next-tag-ver)
+	git tag $ver
+	git push origin --tags
+}
+
+function make-release {
+	github-release release --user $ORG --repo $NAME \
+		--tag $(get-current-git-tag)
+}
+
+function upload-release {
+	github-release upload --user $ORG --repo $NAME \
+		--tag $(get-current-git-tag) \
+        --name kazoo.tar.gz --file export/kazoo.tar.gz
+}
+
 
 if [[ -f scripts/ci/vars.env ]]; then
     source scripts/ci/vars.env
