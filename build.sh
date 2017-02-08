@@ -54,7 +54,7 @@ cd /tmp
 			find -type d -exec mkdir -p ~/\{} \;
 	        find -type f -exec mv \{} ~/\{} \;
 			popd
-		mv sup.bash ~/
+		mv sup.bash ~/etc/
 		mv core/sup/sup ~/bin/
 		mv {scripts,doc} ~/
 		popd && rm -rf $OLDPWD
@@ -136,7 +136,7 @@ chown -R $USER:$USER ~
 
 log::m-info "Cleaning up ..."
 apt-clean --aggressive
-find ~ -maxdepth 1 -type f -exec rm -f {} \;
+find ~ -maxdepth 1 -type f -name '.*' -exec rm -f {} \;
 
 
 log::m-info "Creating archive ..."
