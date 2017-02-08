@@ -54,8 +54,8 @@ cd /tmp
 			find -type d -exec mkdir -p ~/\{} \;
 	        find -type f -exec mv \{} ~/\{} \;
 			popd
-		mv sup.bash /etc/bash_completion.d/
-		mv core/sup/sup /bin/
+		mv sup.bash ~/
+		mv core/sup/sup ~/bin/
 		mv {scripts,doc} ~/
 		popd && rm -rf $OLDPWD
 
@@ -67,6 +67,17 @@ cd /tmp
 		mkdir -p ~/media/prompts
 		mv kazoo-core/* $_
 		popd && rm -rf $OLDPWD
+
+
+log::m-info "Installing kazoo-configs ..."
+mkdir -p /tmp/kazoo-configs
+pushd $_
+	git clone -b $KAZOO_CONFIGS_BRANCH --single-branch --depth 1 https://github.com/2600hz/kazoo-configs .
+	find -mindepth 1 -maxdepth 1 -not -name system -not -name core -exec rm -rf {} \;
+	mkdir -p ~/etc/kazoo/core
+	mv core/* $_
+	popd && rm -rf $OLDPWD
+
 
 
 log::m-info "Installing nodejs v$NODE_VERSION ..."
