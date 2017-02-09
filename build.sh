@@ -54,7 +54,7 @@ cd /tmp
 			find -type d -exec mkdir -p ~/\{} \;
 	        find -type f -exec mv \{} ~/\{} \;
 			popd
-		mv sup.bash ~/etc/
+		mv sup.bash ~/
 		mv core/sup/sup ~/bin/
 		mv {scripts,doc} ~/
 		popd && rm -rf $OLDPWD
