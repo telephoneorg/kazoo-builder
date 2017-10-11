@@ -45,6 +45,7 @@ cd /tmp
 		mv sup.bash ~/
 		mv core/sup/sup ~/bin/
 		mv {scripts,doc} ~/
+		~/lib/sup-*/priv/build-autocomplete.escript ~/sup.bash ~ > ~/doc/sup_commands.txt
 		popd && rm -rf $OLDPWD
 
 

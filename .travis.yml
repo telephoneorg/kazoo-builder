@@ -1,7 +1,12 @@
+language: python
 services: docker
 env:
   global:
   - KAZOO_BRANCH=4.2
+  - DOCKER_USER=joeblackwaslike
+  - DOCKER_ORG=telephoneorg
+  # DOCKER_PASS
+  - secure: "Xg6iuILxzDpQWi9w4WKjrSJ26sXNKrGUgNdmpv0r31KvGaZju3E9Rx/xiADezThSN5JkEGuDCBjZQCeAw7ES3XW6Ru3YiS6fYPPtvx5LC1XDCBVkCDjkvkAiaru5wqMP5rqLGhdJ7YoHMqhoi2YXBTfPd9eItMoK7cRT0HYT1BxRdu3E3WklLCrrxrNKJmMBCdRICSJ8nZAKMXLFWcUL/2PDyOCW+WMAU53fN1kfwsBOLGAxxE7aKRbcL97Yro0d1YkQiVnxa01M4nqtdpO9wznDyMtO55IvoDroQvFEnhmvh0wWC+pweYzcqh5l9DnXSQAnbD0uhDtwEOMJOZkcWG0T3PTtbVNzh5yGYPSHoUNgAE2dQG72U4hMwH24KLsUKWJ2JTzVX/LAjVFdh1afQ2u3TuYHbPlrdxVYDESXUN8CPD2r1Nfp/CMPJ90iChA+L07mkciWKAhJ1c1VUCemwy0Cs46RwsAp5WkBR6RUBUOwM9jzWnRGGWINzXRHyNO4GiPrC91qYPVxZHOV6c3YC6IA8A+icvQYOybp4Ta0mcidPh+ue3RVAD91k0zeKBwv0u37JjCYX8qt0/vnKXKoGpQNze5cM6MR6nsvR0NPbYj9ehKN3AoVqahB9rD3d23kPYmf1KuZtkoyON8A7ypo6GHxXxJ9ZChMzUiSL71I0AM="
 
 notifications:
   email:
@@ -14,14 +19,24 @@ notifications:
     on_failure: always
 
 before_install: source scripts/ci/environment.sh
-install: make build
-script: make export
+install:
+- make build
+- make export
+
+script: true
+
+after_success:
+- ci-tag-build
+- hub-push
+- hub-update-readme
 
 deploy:
   provider: releases
   api_key:
     secure: wlXhnP+l/afNdUWg++jgZWxGtNCTGG1ZebxuxpbEYnaGuW3padZSW0mu293lG5JhLqUivmAxmn6NeVuTt3noX7W8lUuBvoZpRcWrRJE/idgCgAh0EeMd2WFGvuUw6McjTIcnnOh1AqvVwC3qnp9K4jWx1m81QBdmsYQp0QO9rtW01rcXTKIikd6uMihrjI1oC+nxbp6P7l2q9urjJ/eri6IbiIgmwWV5nPZRemvDN/2TVOlXzkN7ihlxfuVVlVntlmi3LDxJJxRhoMBimn6DKtsKqsjpevtsK3cicXy1MTcapvCvxNGiCr/rAZ5k01map1GHdpj9C6RS3CJfLfU6r4H5tZKqHPjmAvRCKbhbx6Vz1kHSC5BN0Ufxjxfw0s7If1gbqmGFcFKfTVU7VodTMTU8rS/njvd55Iu8lx+jZsuus6hFqIMl8cTR6MYt+8tcIpY3D8htybXaKuipq4EYJqopVFcLS9Bco3exeoMCQ2C5uPfJI3R2dV0273gYcGdSc0QfYKcNLKRCo3NojqVzs/2rBCbkAB1hycojrsORjuUYhwhqSQhNSBYMp2dkQRKKs9rEczmFvpruEjZv3SQhH7+TlV1Sb9qh2KTMjFqTcJXWjpnQNtWaqa1QzCIoAmvnXHFqo4lThoHEHfSUmByWSn3sY6XGZsmjJ3tpS05n5O0=
-  file: export/kazoo.v${KAZOO_BRANCH}.tar.gz
+  file:
+  - export/kazoo.v${KAZOO_BRANCH}.tar.gz
+  - export/sup_commands.txt
   skip_cleanup: true
   on:
     repo: telephoneorg/kazoo-builder

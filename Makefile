@@ -1,16 +1,21 @@
 PROJECT := kazoo-builder
+DOCKER_ORG := telephoneorg
+DOCKER_USER := joeblackwaslike
+DOCKER_IMAGE := $(DOCKER_ORG)/$(PROJECT):latest
 
 KAZOO_BRANCH ?= 4.2
 
 .PHONY: build export clean
 
 build:
-	@docker build -t $(PROJECT) --build-arg KAZOO_BRANCH=$(KAZOO_BRANCH) .
+	@docker build -t $(DOCKER_IMAGE) \
+		--build-arg KAZOO_BRANCH=$(KAZOO_BRANCH) .
 
 export:
-	@docker create --name $(PROJECT) $(PROJECT) sleep
-	@docker cp $(PROJECT):/opt/kazoo/kazoo.v$(KAZOO_BRANCH).tar.gz export/
-	@docker rm $(PROJECT)
+	@docker run -it --rm \
+		-v "$(PWD)/export:/export" \
+		$(DOCKER_IMAGE) \
+		cp kazoo.v$(KAZOO_BRANCH).tar.gz doc/sup_commands.txt /export
 
 clean:
-	@rm -rf export/*.tar.gz
+	@rm -rf export/{*.tar.gz,*.txt}

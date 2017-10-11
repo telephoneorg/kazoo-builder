@@ -33,3 +33,7 @@ ENV     HOME /opt/$APP
 
 COPY    build.sh /tmp/
 RUN     /tmp/build.sh
+
+WORKDIR $HOME
+
+RUN lib/sup-*/priv/build-autocomplete.escript sup.bash . > doc/sup_commands.txt
