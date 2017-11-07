@@ -5,9 +5,6 @@ set -e
 # Use local cache proxy if it can be reached, else nothing.
 eval $(detect-proxy enable)
 
-build::user::create $USER
-
-
 log::m-info "Packaging time!"
 
 mkdir -p /tmp/kazoo
@@ -113,7 +110,7 @@ EOF
 log::m-info "Packaging kazoo-configs ..."
 mkdir -p /tmp/kazoo-configs_$KAZOO_CONFIGS_BRANCH
 pushd $_
-    mkdir etc/kazoo
+    mkdir -p etc/kazoo
 	git clone -b $KAZOO_CONFIGS_BRANCH --single-branch --depth 1 https://github.com/2600hz/kazoo-configs-core
 
     mv kazoo-configs-core/core etc/kazoo

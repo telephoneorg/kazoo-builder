@@ -36,7 +36,9 @@ deploy:
     secure: wlXhnP+l/afNdUWg++jgZWxGtNCTGG1ZebxuxpbEYnaGuW3padZSW0mu293lG5JhLqUivmAxmn6NeVuTt3noX7W8lUuBvoZpRcWrRJE/idgCgAh0EeMd2WFGvuUw6McjTIcnnOh1AqvVwC3qnp9K4jWx1m81QBdmsYQp0QO9rtW01rcXTKIikd6uMihrjI1oC+nxbp6P7l2q9urjJ/eri6IbiIgmwWV5nPZRemvDN/2TVOlXzkN7ihlxfuVVlVntlmi3LDxJJxRhoMBimn6DKtsKqsjpevtsK3cicXy1MTcapvCvxNGiCr/rAZ5k01map1GHdpj9C6RS3CJfLfU6r4H5tZKqHPjmAvRCKbhbx6Vz1kHSC5BN0Ufxjxfw0s7If1gbqmGFcFKfTVU7VodTMTU8rS/njvd55Iu8lx+jZsuus6hFqIMl8cTR6MYt+8tcIpY3D8htybXaKuipq4EYJqopVFcLS9Bco3exeoMCQ2C5uPfJI3R2dV0273gYcGdSc0QfYKcNLKRCo3NojqVzs/2rBCbkAB1hycojrsORjuUYhwhqSQhNSBYMp2dkQRKKs9rEczmFvpruEjZv3SQhH7+TlV1Sb9qh2KTMjFqTcJXWjpnQNtWaqa1QzCIoAmvnXHFqo4lThoHEHfSUmByWSn3sY6XGZsmjJ3tpS05n5O0=
   file_glob: true
   file:
-  - export/*
+  - export/*.deb
+  - export/*.tar.gz
+  - export/*.txt
   skip_cleanup: true
   on:
     repo: telephoneorg/kazoo-builder
