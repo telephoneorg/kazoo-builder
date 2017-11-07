@@ -3,19 +3,20 @@ DOCKER_ORG := telephoneorg
 DOCKER_USER := joeblackwaslike
 DOCKER_IMAGE := $(DOCKER_ORG)/$(PROJECT):latest
 
-KAZOO_BRANCH ?= 4.2
+KAZOO_BRANCH ?= 4.1.39
 
-.PHONY: build export clean
+.PHONY: all build-builder build clean
+
+all: build-builder build
+
+build-builder:
+	@docker build -t $(DOCKER_IMAGE) \
+		--build-arg KAZOO_BRANCH=$(KAZOO_BRANCH) images/builder
 
 build:
-	@docker build -t $(DOCKER_IMAGE) \
-		--build-arg KAZOO_BRANCH=$(KAZOO_BRANCH) .
-
-export:
 	@docker run -it --rm \
 		-v "$(PWD)/export:/export" \
-		$(DOCKER_IMAGE) \
-		cp kazoo.v$(KAZOO_BRANCH).tar.gz doc/sup_commands.txt /export
+		$(DOCKER_IMAGE)
 
 clean:
-	@rm -rf export/{*.tar.gz,*.txt}
+	@rm -rf export/{*.tar.gz,*.txt,*.deb}

@@ -67,53 +67,6 @@ pushd $_
 	popd && rm -rf $OLDPWD
 
 
-
-log::m-info "Installing nodejs ${NODE_VERSION} ..."
-curl -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash -
-apt-get install -yqq nodejs
-
-
-log::m-info "Installing node packages ..."
-npm install -g npm gulp
-
-
-log::m-info "Installing monster-ui ..."
-cd /tmp
-	git clone -b $MONSTER_APPS_BRANCH --single-branch --depth 1 https://github.com/2600hz/monster-ui monster-ui
-	pushd $_
-		log::m-info "Installing monster-ui apps ..."
-		pushd src/apps
-			for app in ${MONSTER_APPS//,/ }; do
-				git clone -b $MONSTER_APPS_BRANCH --single-branch --depth 1 https://github.com/2600hz/monster-ui-${app} $app
-			done
-			popd
-		npm install
-		gulp build-prod
-		pushd dist/apps
-			git clone -b $MONSTER_APP_APIEXPLORER_BRANCH --single-branch --depth 1 https://github.com/siplabs/monster-ui-apiexplorer apiexplorer
-			popd
-
-			log::m-info "Cleaning up monster-ui apps ..."
-			# we only need these files for the metadata that will be loaded when running init apps
-			npm uninstall
-
-			find dist/apps -mindepth 2 -maxdepth 2 -not -name i18n -not -name metadata -exec rm -rf {} \;
-			find dist -mindepth 1 -maxdepth 1 -not -name apps -exec rm -rf {} \;
-			find -mindepth 1 -maxdepth 1 -not -name dist -exec rm -rf {} \;
-
-			mkdir -p ~/monster-ui
-			mv dist/* $_
-			popd && rm -rf $OLDPWD
-
-
-log::m-info "Removing npm dirs in ~ ..."
-rm -rf ~/.{npm,v8*} /tmp/npm*
-
-
-log::m-info "Creating Directories ..."
-mkdir -p ~/log
-
-
 log::m-info "Setting Ownership & Permissions ..."
 chown -R $USER:$USER ~
 
@@ -122,9 +75,9 @@ log::m-info "Cleaning up ..."
 find ~ -maxdepth 1 -type f -name '.*' -exec rm -f {} \;
 
 
-log::m-info "Creating archive ..."
-tar czvf /tmp/kazoo.v${KAZOO_BRANCH}.tar.gz ~
-mv /tmp/kazoo.v${KAZOO_BRANCH}.tar.gz ~/
+# log::m-info "Creating archive ..."
+# tar czvf /tmp/kazoo.v${KAZOO_BRANCH}.tar.gz ~
+# mv /tmp/kazoo.v${KAZOO_BRANCH}.tar.gz ~/
 
 
 # if applicable, clean up after detect-proxy enable
