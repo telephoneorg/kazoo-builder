@@ -19,9 +19,7 @@ notifications:
     on_failure: always
 
 before_install: source scripts/ci/environment.sh
-install:
-- make build
-- make export
+install: make
 
 script: true
 
