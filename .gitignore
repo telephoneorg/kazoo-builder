@@ -1,3 +1,4 @@
 export/*.tar.gz
 export/*.deb
 export/*.txt
+local/

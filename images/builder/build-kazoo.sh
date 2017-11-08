@@ -33,7 +33,7 @@ pushd $_
 Package: kazoo
 Version: $KAZOO_BRANCH
 Architecture: amd64
-Depends: expat (>= 2.0.0), libexpat1-dev (>= 2.0.0), htmldoc (>= 1.8.0), iputils-ping (>= 3.0), libncurses5-dev (>= 6.0), libssl1.0.2 (>= 1.0.2), libssl-dev (>= 1.1.0), libxslt-dev (>= 1.1.29), openssl (>= 1.1.0), zlib1g-dev (>= 1.2.8)
+Depends: expat (>= 2.0.0), libexpat1-dev (>= 2.0.0), htmldoc (>= 1.8.0), iputils-ping (>= 3.0), libncurses5-dev (>= 6.0), libssl1.0.2 (>= 1.0.2), libssl-dev (>= 1.1.0), libxslt1-dev (>= 1.1.29-2.1), openssl (>= 1.1.0), zlib1g-dev (>= 1.2.8)
 Maintainer: Joe Black <me@joeblack.nyc>
 Description: The Cloud PBX solution for telecom.
 
