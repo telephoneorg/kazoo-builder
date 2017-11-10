@@ -2,7 +2,6 @@ language: python
 services: docker
 env:
   global:
-  - KAZOO_BRANCH=4.1.39
   - DOCKER_USER=joeblackwaslike
   - DOCKER_ORG=telephoneorg
   # DOCKER_PASS
@@ -41,6 +40,3 @@ deploy:
   on:
     repo: telephoneorg/kazoo-builder
     tags: true
-
-# after_deploy:
-# - Trigger docker-kazoo build
