@@ -16,7 +16,7 @@ target: descriptor.json
         "labels": ["kazoo", "debian", "package"],
         "licenses": ["Apache 2.0"],
         "public_download_numbers": false,
-        "public_stats": false,
+        "public_stats": false
     },
     "version": {
         "name": "{{ env['TRAVIS_TAG'][1:] }}",
@@ -26,7 +26,9 @@ target: descriptor.json
         "gpgSign": true
     },
     "files": [
-        {"includePattern": "dist/(.*\.deb)", "uploadPattern": "$1",
+        {
+            "includePattern": "dist/(.*\\.deb)",
+            "uploadPattern": "$1",
             "matrixParams": {
                 "override": 1,
                 "deb_distribution": "stretch",
@@ -34,8 +36,20 @@ target: descriptor.json
                 "deb_architecture": "amd64"
             }
         },
-        {"includePattern": "dist/(.*\.txt)", "uploadPattern": "docs/$1", "matrixParams": {"override": 1}},
-        {"includePattern": "dist/(.*\.tar\.gz)", "uploadPattern": "archives/$1", "matrixParams": {"override": 1}}
+        {
+            "includePattern": "dist/(.*\\.txt)",
+            "uploadPattern": "docs/$1",
+            "matrixParams": {
+                "override": 1
+            }
+        },
+        {
+            "includePattern": "dist/(.*\\.tar\\.gz)",
+            "uploadPattern": "archives/$1",
+            "matrixParams": {
+                "override": 1
+            }
+        }
     ],
     "publish": true
 }

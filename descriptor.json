@@ -6,17 +6,22 @@
         "desc_url": "https://github.com/telephoneorg/kazoo-builder/README.md",
         "issue_tracker_url": "https://github.com/telephoneorg/kazoo-builder/issues",
         "vcs_url": "https://github.com/telephoneorg/kazoo-builder.git",
-        "licenses": ["Apache 2.0"]
+        "labels": ["kazoo", "debian", "package"],
+        "licenses": ["Apache 2.0"],
+        "public_download_numbers": false,
+        "public_stats": false
     },
     "version": {
-        "name": "0.2.1",
-        "desc": "Kazoo v0.2.1",
+        "name": ".1.41",
+        "desc": "Kazoo 4.1.41",
         "released": "2017-11-29",
-        "vcs_tag": "v0.2.1",
+        "vcs_tag": "4.1.41",
         "gpgSign": true
     },
     "files": [
-        {"includePattern": "dist/(.*\.deb)", "uploadPattern": "$1",
+        {
+            "includePattern": "dist/(.*\\.deb)",
+            "uploadPattern": "$1",
             "matrixParams": {
                 "override": 1,
                 "deb_distribution": "stretch",
@@ -24,8 +29,20 @@
                 "deb_architecture": "amd64"
             }
         },
-        {"includePattern": "dist/(.*\.txt)", "uploadPattern": "docs/$1", "matrixParams": {"override": 1}},
-        {"includePattern": "dist/(.*\.tar\.gz)", "uploadPattern": "archives/$1", "matrixParams": {"override": 1}}
+        {
+            "includePattern": "dist/(.*\\.txt)",
+            "uploadPattern": "docs/$1",
+            "matrixParams": {
+                "override": 1
+            }
+        },
+        {
+            "includePattern": "dist/(.*\\.tar\\.gz)",
+            "uploadPattern": "archives/$1",
+            "matrixParams": {
+                "override": 1
+            }
+        }
     ],
     "publish": true
 }
