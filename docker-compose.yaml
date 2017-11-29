@@ -1,0 +1,11 @@
+version: '2.3'
+services:
+  kazoo-builder:
+    build: images/builder
+    image: telephoneorg/kazoo-builder:${DOCKER_TAG:-latest}
+    environment:
+      KAZOO_VERSION: '4.1.41'
+      KAZOO_CONFIGS_VERSION: '4.1.21'
+      KAZOO_SOUNDS_VERSION: '4.1.0'
+    volumes:
+    - $PWD/dist:/dist

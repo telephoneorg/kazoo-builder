@@ -1,0 +1,41 @@
+---
+target: descriptor.json
+---
+
+{%- set config = data.get('config') -%}
+{%- set package = config['ci']['package'] -%}
+
+{
+    "package": {
+        "name": "{{ package['name'] }}",
+        "repo": "{{ config['repo'] }}",
+        "subject": "telephoneorg",
+        "desc_url": "https://github.com/telephoneorg/{{ config['repo'] }}/README.md",
+        "issue_tracker_url": "https://github.com/telephoneorg/{{ config['repo'] }}/issues",
+        "vcs_url": "https://github.com/telephoneorg/{{ config['repo'] }}.git",
+        "labels": ["kazoo", "debian", "package"],
+        "licenses": ["Apache 2.0"],
+        "public_download_numbers": false,
+        "public_stats": false,
+    },
+    "version": {
+        "name": "{{ env['TRAVIS_TAG'][1:] }}",
+        "desc": "Kazoo {{ env['TRAVIS_TAG'] }}",
+        "released": "{{ shell('date +%F') }}",
+        "vcs_tag": "{{ env['TRAVIS_TAG'] }}",
+        "gpgSign": true
+    },
+    "files": [
+        {"includePattern": "dist/(.*\.deb)", "uploadPattern": "$1",
+            "matrixParams": {
+                "override": 1,
+                "deb_distribution": "stretch",
+                "deb_component": "main",
+                "deb_architecture": "amd64"
+            }
+        },
+        {"includePattern": "dist/(.*\.txt)", "uploadPattern": "docs/$1", "matrixParams": {"override": 1}},
+        {"includePattern": "dist/(.*\.tar\.gz)", "uploadPattern": "archives/$1", "matrixParams": {"override": 1}}
+    ],
+    "publish": true
+}

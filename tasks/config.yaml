@@ -1,0 +1,12 @@
+project: kazoo-builder
+ci:
+  package:
+    name: kazoo
+repo: kazoo-builder
+hub:
+  images:
+  - kazoo-builder
+tmpl:
+  glob: templates/*.j2
+  values:
+  - config.yaml

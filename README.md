@@ -1,5 +1,6 @@
 # Kazoo 4.x Builder
-[![Build Status](https://travis-ci.org/telephoneorg/kazoo-builder.svg?branch=master)](https://travis-ci.org/telephoneorg/kazoo-builder)
+[![Build Status](https://travis-ci.org/telephoneorg/kazoo-builder.svg?branch=master)](https://travis-ci.org/telephoneorg/kazoo-builder) [![Deb packages](https://img.shields.io/bintray/v/telephoneorg/kazoo-builder/kazoo.svg)](https://travis-ci.org/telephoneorg/kazoo-builder)
+
 
 
 ## Maintainer

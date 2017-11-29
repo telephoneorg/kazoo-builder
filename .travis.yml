@@ -2,8 +2,6 @@ language: python
 services: docker
 env:
   global:
-  - DOCKER_USER=joeblackwaslike
-  - DOCKER_ORG=telephoneorg
   # DOCKER_PASS
   - secure: "Xg6iuILxzDpQWi9w4WKjrSJ26sXNKrGUgNdmpv0r31KvGaZju3E9Rx/xiADezThSN5JkEGuDCBjZQCeAw7ES3XW6Ru3YiS6fYPPtvx5LC1XDCBVkCDjkvkAiaru5wqMP5rqLGhdJ7YoHMqhoi2YXBTfPd9eItMoK7cRT0HYT1BxRdu3E3WklLCrrxrNKJmMBCdRICSJ8nZAKMXLFWcUL/2PDyOCW+WMAU53fN1kfwsBOLGAxxE7aKRbcL97Yro0d1YkQiVnxa01M4nqtdpO9wznDyMtO55IvoDroQvFEnhmvh0wWC+pweYzcqh5l9DnXSQAnbD0uhDtwEOMJOZkcWG0T3PTtbVNzh5yGYPSHoUNgAE2dQG72U4hMwH24KLsUKWJ2JTzVX/LAjVFdh1afQ2u3TuYHbPlrdxVYDESXUN8CPD2r1Nfp/CMPJ90iChA+L07mkciWKAhJ1c1VUCemwy0Cs46RwsAp5WkBR6RUBUOwM9jzWnRGGWINzXRHyNO4GiPrC91qYPVxZHOV6c3YC6IA8A+icvQYOybp4Ta0mcidPh+ue3RVAD91k0zeKBwv0u37JjCYX8qt0/vnKXKoGpQNze5cM6MR6nsvR0NPbYj9ehKN3AoVqahB9rD3d23kPYmf1KuZtkoyON8A7ypo6GHxXxJ9ZChMzUiSL71I0AM="
 
@@ -17,18 +15,36 @@ notifications:
     on_success: always
     on_failure: always
 
-before_install: source scripts/ci/environment.sh
-install: make
+before_install: pip install --upgrade docker-compose invoke pyyaml
+install:
+- inv dc.build
+- inv dc.up
 
 script: true
+# inv test
 
 after_success:
-- ci-tag-build
-- hub-push
-- hub-update-readme
+- inv ci.tag-build
+- inv hub.push
+- inv hub.update-readme
+
+before_deploy:
+- pip install tmpld
+- inv tmpl.render
 
 deploy:
-  provider: releases
+- provider: bintray
+  file: descriptor.json
+  user: joeblackwaslike
+  key:
+    secure: "VO/SX/ZbsTyKSxh9tz5jvah4SQGkCmqg57n7unOgD36dmtHZfGDB3ZgxvHuLSy9x02OENJwDxDDzcv4TlH8CkiMJtB+XBnDtF1dn4tP8fISn6mll37JlMyjgG58NXNhysTMmZveIZllKnralnAzalhtQnY6Hm94riOxpR9cpVVIKdExCEM5lk1OSxnYu9CJ2kADZrF/Cl8SWJbbhK2RMnNvGYulLuoRd/0ItqNZP8gyDzoWwNwS6eQ4LTnuAUE2kCcP++gV3ywop/6L57sgzDt6t1W9mhgd9S0vgWnseqyUf5kVjmNnE8p85hWrqK5vxUGJ97VdzHGQ6FhLaKklYBZFVXwj8xnNnZ4RTy7nLrtqFpq/wVyl2NVrma0B8Q/eMCNIVfpg99a643h7XFmq4GJtzrXk4BVUBiWrkMQ10hko2cHrdFvFoFbDMPVrwcLK2aB6Z9lRc7UosG3ZDv2GCaLSY7yJfmV1W68IvzzQCdqjk3J2CKlX0XxiWJ5mbbDXsRJ/B9b3uRqA4tmtvpzPw/0XGy4yRG7zUbkfWcUlzREFdnQURpW6oUZVyU5uqMlxBLTiLD5HvS2lg3Z189Ht2ZNe0jhqhFJOVPSBLj6GnTu2DkooP7XgnUjAWIGOIKtmZptgmXS3JqOdNrcI5AMfTu7cyp7OEitMTpDSf0/JcpIs="
+  passphrase:
+    secure: "YrZJcoLvM4XBP4F1VMbQWBu6YELzhR7xTYC6mLBiq7x9I8Ra3YGfzUeenSU6NpqOS/sI9fJrr2eTqyBxtMs58sAEP/2ztfBfCRhsItIAIJCDqr5YLqRq4A1tOABsaKv7N14RVXlaQpbv/UHZId2HS75nWviG9NokcIQLHgOCexntSL8XNvGSvjI5xPFRR+V3uVZh3o+bp6i9muB8pd/PwU1dSkwqS0FSLtt6sgis6iTiUYtxCsX+ByLAJrCojfNvO7NFvzSDlIPhMI2DKZt+Rj7R9r8mmyK84v/MffaQECnlwf+tYpNBiPtQW/ONiuvks8q37qWyai+Dir7LkXZE/T/+8P35Eqi82EB6UAMFs2iuEtaXegGhFFwfZLknGZE0NQS1hzllCtlRP3bN690po2Xblhsnf2QJKQ/8Tfbz0ObqyhvDiez77dJosvameg5kjPT9hMGBPqULkl3GPcxT9b/rrIXOxUZFmmXrW6vZfyUfaM46UUNYMqhVDOPECfg+jGkZEUMTKg4EIHsyzCH5+5ZNV+Oyc6s/YvhgGUVdyfL6YdxwOpzgzOyaHio1AtySs7nbFLr2D4S0Msh+R97YJgFVS4syjXyijtU1aUYu7WurUDX6Hf+C542WKbSYyv6RRNyGxLfX8LTRLtuxwFQnDDa3gHf4S1Ol0CU9hws25ZU="
+  skip_cleanup: true
+  on:
+    repo: telephoneorg/kazoo-builder
+    tags: true
+- provider: releases
   api_key:
     secure: wlXhnP+l/afNdUWg++jgZWxGtNCTGG1ZebxuxpbEYnaGuW3padZSW0mu293lG5JhLqUivmAxmn6NeVuTt3noX7W8lUuBvoZpRcWrRJE/idgCgAh0EeMd2WFGvuUw6McjTIcnnOh1AqvVwC3qnp9K4jWx1m81QBdmsYQp0QO9rtW01rcXTKIikd6uMihrjI1oC+nxbp6P7l2q9urjJ/eri6IbiIgmwWV5nPZRemvDN/2TVOlXzkN7ihlxfuVVlVntlmi3LDxJJxRhoMBimn6DKtsKqsjpevtsK3cicXy1MTcapvCvxNGiCr/rAZ5k01map1GHdpj9C6RS3CJfLfU6r4H5tZKqHPjmAvRCKbhbx6Vz1kHSC5BN0Ufxjxfw0s7If1gbqmGFcFKfTVU7VodTMTU8rS/njvd55Iu8lx+jZsuus6hFqIMl8cTR6MYt+8tcIpY3D8htybXaKuipq4EYJqopVFcLS9Bco3exeoMCQ2C5uPfJI3R2dV0273gYcGdSc0QfYKcNLKRCo3NojqVzs/2rBCbkAB1hycojrsORjuUYhwhqSQhNSBYMp2dkQRKKs9rEczmFvpruEjZv3SQhH7+TlV1Sb9qh2KTMjFqTcJXWjpnQNtWaqa1QzCIoAmvnXHFqo4lThoHEHfSUmByWSn3sY6XGZsmjJ3tpS05n5O0=
   file_glob: true

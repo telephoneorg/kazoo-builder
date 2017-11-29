@@ -4,6 +4,7 @@ KAZOO_SHORT_VERSION=${KAZOO_VERSION%.*}
 
 set -e
 
+
 env
 
 # Use local cache proxy if it can be reached, else nothing.
@@ -15,10 +16,14 @@ pushd $_
     log::m-info "Compiling kazoo v$KAZOO_VERSION ..."
 	git clone -b $KAZOO_VERSION --single-branch --depth 1 https://github.com/2600Hz/kazoo kazoo
     pushd $_
+        log::m-info "Applying patches ..."
+        mv /tmp/patches .
+        git apply patches/*.diff
+
 		make
 		make build-release
 		make sup_completion
-        cp core/sup/sup /dist
+
 		mv core/sup/sup _rel/kazoo/bin/
 		mv sup.bash _rel/kazoo
         chmod +x _rel/kazoo/bin/{nodetool,install_upgrade.escript}
@@ -27,9 +32,11 @@ pushd $_
 		_rel/kazoo/lib/sup-*/priv/build-autocomplete.escript _rel/kazoo/sup.bash _rel/kazoo > _rel/kazoo/doc/sup_commands.txt
         popd
 
-    mkdir -p kazoo_$KAZOO_VERSION/{opt,DEBIAN} kazoo_$KAZOO_VERSION/etc/security/limits.d
+    mkdir -p kazoo_$KAZOO_VERSION/{opt,DEBIAN} kazoo_$KAZOO_VERSION/etc/security/limits.d kazoo_$KAZOO_VERSION/usr/bin kazoo_$KAZOO_VERSION/etc/bash_completion.d
     mv kazoo/_rel/kazoo kazoo_$KAZOO_VERSION/opt
     pushd kazoo_$KAZOO_VERSION
+        mv opt/kazoo/bin/sup usr/bin
+        mv opt/kazoo/sup.bash /etc/bash_completion.d
         curl -o etc/security/limits.d/kazoo.limits.conf \
             https://raw.githubusercontent.com/2600hz/kazoo-configs-core/$KAZOO_SHORT_VERSION/system/security/limits.d/kazoo-core.limits.conf
         tee DEBIAN/control <<EOF
@@ -51,13 +58,8 @@ case "$1" in
 configure)
 	! getent passwd kazoo > /dev/null 2&>1 && adduser --system --no-create-home --gecos "Kazoo" --group kazoo || true
 
-    mkdir -p /var/run/kazoo /etc/bash_completion.d
-
     chown -R kazoo: /opt/kazoo /var/run/kazoo
 
-    ln -s /opt/kazoo/bin/sup /usr/bin/sup
-
-    ln -s  /opt/kazoo/sup.bash /etc/bash_completion.d/sup.bash
 	;;
 esac
 
