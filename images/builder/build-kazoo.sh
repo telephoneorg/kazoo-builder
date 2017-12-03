@@ -4,9 +4,6 @@ KAZOO_SHORT_VERSION=${KAZOO_VERSION%.*}
 
 set -e
 
-
-env
-
 # Use local cache proxy if it can be reached, else nothing.
 eval $(detect-proxy enable)
 
@@ -33,10 +30,11 @@ pushd $_
         popd
 
     mkdir -p kazoo_$KAZOO_VERSION/{opt,DEBIAN} kazoo_$KAZOO_VERSION/etc/security/limits.d kazoo_$KAZOO_VERSION/usr/bin kazoo_$KAZOO_VERSION/etc/bash_completion.d
+    mkdir -p kazoo_$KAZOO_VERSION/var/run
     mv kazoo/_rel/kazoo kazoo_$KAZOO_VERSION/opt
     pushd kazoo_$KAZOO_VERSION
         mv opt/kazoo/bin/sup usr/bin
-        mv opt/kazoo/sup.bash /etc/bash_completion.d
+        mv opt/kazoo/sup.bash etc/bash_completion.d
         curl -o etc/security/limits.d/kazoo.limits.conf \
             https://raw.githubusercontent.com/2600hz/kazoo-configs-core/$KAZOO_SHORT_VERSION/system/security/limits.d/kazoo-core.limits.conf
         tee DEBIAN/control <<EOF
@@ -57,7 +55,7 @@ set -e
 case "$1" in
 configure)
 	! getent passwd kazoo > /dev/null 2&>1 && adduser --system --no-create-home --gecos "Kazoo" --group kazoo || true
-
+    mkdir -p /opt/kazoo /var/run/kazoo
     chown -R kazoo: /opt/kazoo /var/run/kazoo
 
 	;;
@@ -103,6 +101,7 @@ set -e
 case "$1" in
     configure)
         ! getent passwd kazoo > /dev/null 2&>1 && adduser --system --no-create-home --gecos "Kazoo" --group kazoo || true
+        mkdir -p /opt/kazoo/media/prompts
         chown -R kazoo: /opt/kazoo/media/prompts
         ;;
 esac
@@ -147,6 +146,7 @@ set -e
 case "$1" in
     configure)
         ! getent passwd kazoo > /dev/null 2&>1 && adduser --system --no-create-home --gecos "Kazoo" --group kazoo || true
+        mkdir -p /etc/kazoo/core
         chown -R kazoo: /etc/kazoo/core
         ;;
 esac

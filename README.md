@@ -28,14 +28,17 @@ The following variables are standard in most of our dockerfiles to reduce duplic
 * `HOME` /opt/kazoo
 
 
-## Installing kazoo
+<!-- ## Installing kazoo
 ```bash
-gpg --recv-key 04DFE96608062553B3701F2E7CA7320BE23F8CA8
-echo "deb https://dl.bintray.com/telephoneorg/kazoo-builder stretch main" > /etc/apt/sources.list.d/telephone-org.list
+apt-get update -qq
+apt-get install -y apt-transport-https
+
+apt-key adv --recv 04DFE96608062553B3701F2E7CA7320BE23F8CA8
+echo "deb https://dl.bintray.com/telephoneorg/kazoo-builder/ stretch main" > /etc/apt/sources.list.d/telephone-org.list
 apt-get update
 
 apt-get install -y \
     kazoo \
     kazoo-configs \
     kazoo-sounds
-```
+``` -->
