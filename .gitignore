@@ -2,3 +2,4 @@ dist/*.tar.gz
 dist/*.deb
 dist/*.txt
 dist/sup
+local/
